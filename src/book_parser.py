@@ -64,7 +64,7 @@ def clean_text(text: str) -> str:
 
 def _soup_text(soup: BeautifulSoup) -> str:
     """Extract readable text from a BeautifulSoup object, skipping noise tags."""
-    for tag in soup.find_all(_SKIP_TAGS):
+    for tag in soup.find_all(list(_SKIP_TAGS)):
         tag.decompose()
     return soup.get_text(separator="\n")
 

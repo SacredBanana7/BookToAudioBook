@@ -182,8 +182,8 @@ def detect_gender_from_context(name: str, text: str) -> str:
     for i, sentence in enumerate(sentences):
         if not re.search(rf"\b{first}\b", sentence, re.IGNORECASE):
             continue
-        # Examine a short window around the sentence containing the name
-        window_start = max(0, i - 1)
+        # Examine ±2 sentences around the sentence containing the name
+        window_start = max(0, i - 2)
         window_end = min(len(sentences), i + 3)
         window = " ".join(sentences[window_start:window_end])
         male_count += len(re.findall(r"\b(?:he|him|his)\b", window, re.IGNORECASE))

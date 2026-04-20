@@ -8,7 +8,7 @@ from typing import List
 
 import edge_tts
 
-_MAX_CHUNK_CHARS = 3000  # edge-tts handles up to ~5 000 chars; keep a safe margin
+_MAX_CHUNK_CHARS = 3000  # edge-tts handles up to ~5,000 chars; keep a safe margin
 
 
 def chunk_text(text: str, max_chars: int = _MAX_CHUNK_CHARS) -> List[str]:
