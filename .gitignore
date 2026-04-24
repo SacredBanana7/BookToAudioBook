@@ -3,28 +3,32 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.egg-info/
-.eggs/
 dist/
 build/
 *.egg
 
-# Virtual environments
-.venv/
+# Virtuelle Umgebungen
 venv/
-env/
+.env/
 
-# Generated audiobook output
-audiobooks/
-*.mp3
-
-# Streamlit
-.streamlit/
-
-# Pytest
-.pytest_cache/
-.coverage
-
-# IDEs
-.idea/
+# IDE
 .vscode/
+.idea/
 *.swp
+*.swo
+
+# Betriebssystem
+Thumbs.db
+.DS_Store
+
+# Generierte Dateien
+*.mp3
+*.wav
+temp_chapter.txt
+
+# Piper TTS (nicht mehr genutzt)
+piper_model/
+
+# Stimm-Samples (zu groß für Git)
+samples/*.wav
+samples/*.mp3

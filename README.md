@@ -1,88 +1,99 @@
-# 🎧 BookToAudioBook
+# Hörbuch-Konverter
 
-Convert any `.epub` or `.txt` book into a fully-voiced MP3 audiobook — one file per chapter — with automatic character detection and configurable voices.
+**Textdateien → kapitelweise MP3-Hörbücher mit Multi-Stimmen-System**
+
+Erkennt Erzähler und Charaktere automatisch und weist ihnen unterschiedliche TTS-Stimmen zu. Unterstützt deutsche Zahlen-Aussprache, Geschlechts-Erkennung und buchspezifische Charakter-Profile.
 
 ## Features
 
-| Feature | Details |
-|---------|---------|
-| **Input formats** | `.epub`, `.txt` |
-| **Output** | One `.mp3` file per chapter |
-| **Character detection** | Dialogue attribution using pattern matching |
-| **Gender-aware voices** | Male voices for male characters, female voices for female characters (auto-detected) |
-| **Voice preview** | Listen to any voice before assigning it |
-| **Manual override** | Re-assign voices and genders per character in the UI |
-| **Clean output** | URLs, e-mail addresses, and non-printable characters are stripped before TTS |
-
-## Prerequisites
-
-| Requirement | Install |
-|-------------|---------|
-| Python ≥ 3.9 | [python.org](https://www.python.org/) |
-| ffmpeg | `sudo apt install ffmpeg` / `brew install ffmpeg` / [ffmpeg.org](https://ffmpeg.org/) |
-| Internet access | Required by Microsoft Edge TTS at runtime |
+- Automatische Kapitel-Erkennung (verschiedene Formate: "Kapitel 1", "1. Aventiure", etc.)
+- Multi-Stimmen-System: Verschiedene Stimmen für Erzähler und Dialogpartner
+- 10 deutsche Neural-TTS-Stimmen (DE/AT/CH, männlich + weiblich)
+- Automatische Charakter-Erkennung aus wörtlicher Rede (»...«, „...")
+- Geschlechts-Erkennung via Kontext-Analyse (Pronomen, Schlüsselwörter)
+- Deutsche Zahlen-zu-Text Konvertierung (optimiert für TTS-Aussprache)
+- Buchspezifische Charakter-Profile (JSON) mit Alias-System
+- Vorschau-Funktion pro Stimme und Kapitel
+- Dark-Theme GUI (tkinter)
 
 ## Installation
 
 ```bash
-# Clone the repo
-git clone https://github.com/SacredBanana7/BookToAudioBook.git
-cd BookToAudioBook
+# Repository klonen
+git clone https://github.com/DEIN-USERNAME/hoerbuch-konverter.git
+cd hoerbuch-konverter
 
-# Install Python dependencies
+# Abhängigkeiten installieren
 pip install -r requirements.txt
+
+# Starten
+python hoerbuch_konverter.py
 ```
 
-## Running the app
-
-```bash
-streamlit run app.py
-```
-
-Your browser opens at `http://localhost:8501`.
-
-## How to use
-
-1. **Upload** your `.epub` or `.txt` file in the sidebar.
-2. **Book Overview** tab — review extracted chapters and auto-detected characters.
-3. **Voice Assignment** tab — each character has an auto-assigned voice.  
-   - Click **▶ Preview** to hear a sample before confirming.  
-   - Use the dropdown to pick any of the 12 built-in Neural voices.  
-   - Override the detected gender if needed.
-4. **Generate Audiobook** tab — select chapters, click **Generate**.  
-   Download links appear for each chapter once conversion is complete.
-
-## Architecture
+## Projektstruktur
 
 ```
-BookToAudioBook/
-├── app.py                   # Streamlit UI
+hoerbuch-konverter/
+├── hoerbuch_konverter.py     # Haupt-GUI
+├── zahlen_konverter.py       # Deutsche Zahlen → Text
+├── text_parser.py            # Kapitel-Erkennung, Dialog-Parser
+├── charakter_engine.py       # Geschlechts-Erkennung, Buch-Profile
+├── tts_engine.py             # TTS-Abstraktionsschicht
+├── book_profiles/            # Buchspezifische Charakter-Profile
+│   └── qwert_moers.json      # Profil für "Qwert" von Walter Moers
+├── kapitel_txt/              # Generierte Kapitel-Textdateien
 ├── requirements.txt
-└── src/
-    ├── book_parser.py        # epub / txt parsing + text cleaning
-    ├── character_detector.py # dialogue attribution & gender detection
-    ├── voice_manager.py      # voice catalogue & assignment logic
-    ├── tts_engine.py         # edge-tts wrapper with chunking
-    └── audio_assembler.py    # pydub-based chapter audio assembly
+├── PROJECT.md                # Detaillierte Projektdokumentation
+└── README.md
 ```
 
-## Running tests
+## Benutzung
 
-```bash
-pytest tests/ -v
-```
+1. **Textdatei laden**: Über "Durchsuchen" eine .txt-Datei auswählen
+2. **Kapitel werden erkannt**: Automatisch anhand von Überschriften-Mustern
+3. **Charaktere werden erkannt**: Sprecher aus wörtlicher Rede identifiziert
+4. **Stimmen zuordnen**: Erzähler-Stimme wählen, Charakter-Stimmen anpassen
+5. **Optional: Buch-Profil laden**: JSON-Profil für genauere Charakter-Zuordnung
+6. **Hörbuch erstellen**: Konvertiert alle Kapitel zu MP3
 
-## Available voices
+## Buch-Profile
 
-The tool ships with 12 default Microsoft Edge Neural voices:
+Für bekannte Bücher können JSON-Profile erstellt werden, die enthalten:
+- Charakter-Namen und Aliases (z.B. "Jadusa" = "Meduse" = "Janusmeduse")
+- Geschlechts-Informationen
+- Stimmcharakter-Beschreibungen
+- Sonderfälle (z.B. Erzählerstimme im Kopf, Stimm-Splits)
 
-| Gender | Voices |
-|--------|--------|
-| Male | `en-US-GuyNeural`, `en-US-DavisNeural`, `en-US-TonyNeural`, `en-US-ChristopherNeural`, `en-GB-RyanNeural`, `en-AU-WilliamNeural` |
-| Female | `en-US-JennyNeural`, `en-US-AriaNeural`, `en-US-SaraNeural`, `en-US-NancyNeural`, `en-GB-SoniaNeural`, `en-AU-NatashaNeural` |
+Beispiel siehe `book_profiles/qwert_moers.json`.
 
-## Notes
+## Verfügbare Stimmen
 
-- TTS is provided free of charge by Microsoft's Edge read-aloud service via the `edge-tts` Python package.  There are no official rate-limit guarantees; very large books may require retries.
-- For books with no chapter headings (common in plain `.txt` exports), the entire file is treated as a single chapter.
-- Character detection works best on books with traditional dialogue attribution ("she said", "he replied", etc.).  First-person or stream-of-consciousness prose will have fewer detected characters.
+| Stimme | Sprache | Geschlecht |
+|--------|---------|------------|
+| Conrad | DE | männlich |
+| Florian (multilingual) | DE | männlich |
+| Killian | DE | männlich |
+| Jonas | AT | männlich |
+| Jan | CH | männlich |
+| Seraphina (multilingual) | DE | weiblich |
+| Amala | DE | weiblich |
+| Katja | DE | weiblich |
+| Ingrid | AT | weiblich |
+| Leni | CH | weiblich |
+
+## Systemanforderungen
+
+- Python 3.10+
+- Windows (für `os.startfile` Vorschau; leicht anpassbar für Linux/Mac)
+- Internetverbindung (Edge-TTS ist Cloud-basiert)
+
+## Geplante Features
+
+- **Chatterbox TTS**: Lokale TTS-Engine mit Emotions-Regler und Voice Cloning
+- **Erzählerstimme im Kopf**: Erkennung von inneren Monologen als separater Sprecher
+- **ID3-Tags**: Titel, Kapitel, Cover in MP3s einbetten
+- **Fortschrittsanzeige** mit geschätzter Restzeit
+
+## Lizenz
+
+MIT

@@ -1,0 +1,15 @@
+# Automatisch LF in Git, CRLF im Working Tree (Windows)
+* text=auto eol=lf
+
+# Python immer LF
+*.py text eol=lf
+
+# JSON/MD/TXT immer LF
+*.json text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+
+# Binärdateien nicht anfassen
+*.mp3 binary
+*.wav binary
+*.onnx binary
