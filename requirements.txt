@@ -1,0 +1,23 @@
+# Hörbuch-Konverter - Abhängigkeiten
+#
+# Installation:
+#   python -m venv .venv
+#   .venv\Scripts\activate         (Windows)
+#   source .venv/bin/activate       (Linux)
+#
+#   # PyTorch MUSS zuerst von der CUDA-Index-URL installiert werden,
+#   # sonst landet eine CPU-Version via chatterbox-tts -> torch:
+#   pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu128
+#
+#   pip install -r requirements.txt
+
+# TTS Engines
+edge-tts>=6.1.0
+chatterbox-tts>=0.1.7
+
+# Hinweis: chatterbox-tts zieht torch, torchaudio, transformers, diffusers,
+# librosa, numpy etc. automatisch mit. Torch aber bitte wie oben zuerst
+# explizit mit CUDA installieren.
+
+# GUI (in Python enthalten)
+# tkinter

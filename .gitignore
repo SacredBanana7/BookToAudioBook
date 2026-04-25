@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtuelle Umgebungen
+venv/
+.venv/
+.env/
+
+# TTS-Modelle / Caches (mehrere GB)
+models/
+piper_model/
+test_output/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Betriebssystem
+Thumbs.db
+.DS_Store
+
+# Generierte Audio-Dateien
+*.mp3
+*.wav
+temp_chapter.txt
+
+# Urheberrechtlich geschütztes Quellmaterial (Walter Moers)
+quellmaterial/
+kapitel_txt/
+
+# Private Stimmdaten (echte Personen, WhatsApp-Aufnahmen)
+"Audio Samples whatzapp"/
+stimmen_profile/
+
+# Generierte Vorschau- und Demo-Audio
+stimmen_vorschau/
+preset_stimmen/
+preset_stimmen_kokoro/
+demo_output/
+wav/

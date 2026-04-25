@@ -1,0 +1,139 @@
+{
+  "buch": {
+    "titel": "Qwert",
+    "autor": "Walter Moers",
+    "kapitel_pattern": "^\\d+\\.\\s+Aventiure",
+    "dialog_marker": "guillemets",
+    "anmerkungen": "Wörtliche Rede in »...« (Guillemets). Zuordnung meist NACH dem Dialog."
+  },
+
+  "charaktere": {
+    "Qwert": {
+      "geschlecht": "m",
+      "aliases": ["Prinz Kaltbluth", "Kaltbluth", "Tarnmeister", "Zuiopü"],
+      "stimmcharakter": "warm, anfangs unsicher/lallig, zunehmend heroisch",
+      "dialog_volumen": "hoch",
+      "anmerkungen": "Gallertprinz, Hauptfigur. Wird auch 'der Ritter' und 'mein edler Herr' genannt."
+    },
+
+    "Oyo": {
+      "geschlecht": "m",
+      "aliases": ["Queekwigg", "Pagenherz", "Ritter von Queekwigg-Pagenherz"],
+      "stimmcharakter": "komisch, redselig, Wortspiele, drollig",
+      "dialog_volumen": "hoch",
+      "anmerkungen": "Knappe/Gnom, komische Figur. Spricht sehr viel."
+    },
+
+    "Jadusa": {
+      "geschlecht": "w",
+      "aliases": ["Meduse", "Janusmeduse", "Schönheit", "Kreatur", "Jamusa"],
+      "stimmcharakter": "ZWEI STIMMEN: schönes Gesicht = kokett/charmant, hässliches Gesicht = grässlich verzerrt",
+      "dialog_volumen": "hoch",
+      "anmerkungen": "Janusmeduse mit zwei Gesichtern. Ab Kap.26 wird sie zu 'Jamusa' (Muse). Stimm-Split beachten!"
+    },
+
+    "Mythenmetz": {
+      "geschlecht": "m",
+      "aliases": ["Hildegunst", "Hildegunst von Mythenmetz", "Lindwurm"],
+      "stimmcharakter": "gebildet, eloquent, selbstironisch, langatmig",
+      "dialog_volumen": "hoch",
+      "anmerkungen": "Lindwurm, 'Der Einsame Denker'. Wird in Kap.31 als Autor der Prinz-Kaltbluth-Romane enthüllt."
+    },
+
+    "Eiserner Ritter": {
+      "geschlecht": "m",
+      "aliases": [],
+      "stimmcharakter": "blechern, schnarrend, Zahlenschluckauf",
+      "dialog_volumen": "mittel",
+      "anmerkungen": "Schiebt zufällige Zahlen in seine Rede ein: 'Dreiundzwanzig!', 'Sechsundvierzig!' als Tick."
+    },
+
+    "Hölzerner Ritter": {
+      "geschlecht": "m",
+      "aliases": ["Pflanzenriese", "Goldener Ritter", "Pax", "Ukuthula Pax Uxolo"],
+      "stimmcharakter": "dröhnend, größenwahnsinnig → später (als Pax) jovial, pazifistisch, verliebt",
+      "dialog_volumen": "mittel",
+      "anmerkungen": "Wandelt sich im Laufe der Geschichte stark."
+    },
+
+    "Gläserner Ritter": {
+      "geschlecht": "m",
+      "aliases": [],
+      "stimmcharakter": "gurgelnd, rachsüchtig, pathetisch",
+      "dialog_volumen": "mittel",
+      "anmerkungen": ""
+    },
+
+    "Arif": {
+      "geschlecht": "m",
+      "aliases": [],
+      "stimmcharakter": "feierlich, salbungsvoll",
+      "dialog_volumen": "mittel",
+      "anmerkungen": "Hat einen extrem langen vollen Namen."
+    },
+
+    "Riesengletscherzwerg": {
+      "geschlecht": "m",
+      "aliases": ["Eins", "Zwei", "Drei", "Vier", "Fünf", "Sechs", "Sieben"],
+      "stimmcharakter": "polternd, grob, langsam",
+      "dialog_volumen": "gering",
+      "anmerkungen": "7 Zwerge, können alle die gleiche Stimme teilen."
+    },
+
+    "Flederfrosch": {
+      "geschlecht": "m",
+      "aliases": [],
+      "stimmcharakter": "quakend, beschwichtigend",
+      "dialog_volumen": "gering",
+      "anmerkungen": "Dolmetscher des Fleischbergs."
+    },
+
+    "Janusmännlein": {
+      "geschlecht": "m",
+      "aliases": [],
+      "stimmcharakter": "Oyo-Imitat, dann grotesk verzerrt",
+      "dialog_volumen": "gering",
+      "anmerkungen": ""
+    },
+
+    "Danzelot": {
+      "geschlecht": "m",
+      "aliases": [],
+      "stimmcharakter": "echohafte Wiederholungen: 'Hallohallo! Gib Küsschen!'",
+      "dialog_volumen": "gering",
+      "anmerkungen": "Flederfrosch bei Mythenmetz."
+    }
+  },
+
+  "sonderfaelle": {
+    "erzaehlerstimme_im_kopf": {
+      "beschreibung": "Eine Stimme die auch in »...« spricht, aber KEIN Dialog ist. Literarischer Erzähler in Trivialroman-Manier über 'Prinz Kaltbluth' in der 3. Person.",
+      "erkennungsmerkmale": [
+        "Spricht von Qwert/Prinz Kaltbluth in der 3. Person",
+        "Stil: übertrieben schwülstig, blumig, klischeehaft",
+        "Kein Gesprächspartner antwortet direkt darauf",
+        "Qwert reagiert mit 'Ruhe!', 'Aufhören!' oder 'Diese Stimme schon wieder!'"
+      ],
+      "stimmcharakter": "übertrieben artikuliert, leicht affektiert, distinguiert",
+      "enthuellung": "Wird in Kap. 31 als Mythenmetz enthüllt",
+      "stellen": ["Kap.1: Spiegel", "Kap.1: Mädchen", "Kap.1: Medusenwächter", "Kap.3: Sturz", "Kap.11: Buhurt", "Kap.16: Ruinenraupe"]
+    },
+
+    "jadusa_stimm_split": {
+      "beschreibung": "Jadusa hat zwei Gesichter mit unterschiedlichen Stimmen",
+      "schoen": "kokett, charmant, verführerisch",
+      "haesslich": "grässlich verzerrt, krächzend",
+      "anmerkung": "Ab Kap. 26 wird sie zu 'Jamusa' (nur noch schönes Gesicht/Muse)"
+    },
+
+    "eiserner_ritter_zahlen": {
+      "beschreibung": "Schiebt zufällige Zahlen als Schluckauf in seine Rede ein",
+      "beispiele": ["Dreiundzwanzig!", "Sechsundvierzig!"],
+      "anmerkung": "Zahlen sollten besonders betont/anders intoniert werden"
+    }
+  },
+
+  "sprechverben_zusaetzlich": [
+    "lallte", "schnarrte"
+  ]
+}
