@@ -97,6 +97,7 @@ Hörbuch/
 | **E2-TTS** | teilweise | ja | Ähnlich F5-TTS |
 | **Kokoro ONNX** | via espeak-ng | nein | 27/54 Stimmen 3/3 Deutsch, kein Drift, kein Cloning |
 | **XTTS v2** ✓ | **nativ** | **ja** | Bestes Ergebnis für Cloning, gewählt |
+| **Qwen3-TTS 1.7B CustomVoice** | nativ (german) | nein* | 9 feste Speaker, kein Drift, ~1-3x Echtzeit; kein Cloning |
 
 ### Warum XTTS v2?
 - Natives Deutsch (`language="de"`) ohne Fremdakzent
@@ -213,6 +214,18 @@ Eine Stimme in »...«, die aber **kein Dialog** ist. Spricht über Qwert in der
 - Espeak-ng DLL kann keine Pfade mit Umlauten lesen → Daten nach `%LOCALAPPDATA%\espeak-ng-data` kopiert
 - Beste Stimmen (3/3): `ef_dora`, `bm_george`, `bm_lewis`, `bf_alice`, `bf_emma`, `bf_isabella`, `ff_siwis`, `if_sara`, `im_nicola`
 - Samples in `preset_stimmen_kokoro/`
+
+### Qwen3-TTS 1.7B CustomVoice – Ergebnis
+- **Modell:** `Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice` (~3.5GB, in `models/huggingface/`)
+- **Venv:** `.qwen_venv/` (separates Env, inkompatibel mit XTTS v2 wegen transformers==4.57.3)
+- **9 Speaker:** `aiden, dylan, eric, ono_anna, ryan, serena, sohee, uncle_fu, vivian`
+- **Sprachen:** auto, chinese, english, french, german, italian, japanese, korean, portuguese, russian, spanish
+- **Deutsch:** nativ unterstützt (`language="German"`) – kein Akzent-Problem wie bei Kokoro
+- **Geschwindigkeit:** ~7-28s pro Satz (RTX 4070 Ti, ohne flash-attn) – langsamer als XTTS v2
+- **Kein Voice Cloning** im CustomVoice-Modell. Cloning wäre über das separate `Base`-Modell möglich.
+- **Fazit:** Interessant für Nebencharaktere ohne WhatsApp-Sample, Qualitätscheck via Whisper ausstehend
+- *Note: `Base`-Modell würde Voice Cloning erlauben – noch nicht getestet
+- **Testskript:** `archiv/test_qwen3tts.py`
 
 ### Phase 2: XTTS v2 in Haupt-Pipeline einbauen
 1. `tts_engine.py` auf XTTS v2 umstellen (statt Edge-TTS)

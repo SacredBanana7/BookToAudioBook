@@ -3,41 +3,40 @@ import sys, io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 """
-Demo Kapitel 3 – XTTS v2 Preset-Stimmen
-=========================================
-Gleiche Passage wie demo_kapitel3.py, aber mit eingebauten
-Preset-Sprecher-Stimmen statt WhatsApp-Klonen.
+Demo Kapitel 3 – Qwen3-TTS-12Hz-1.7B-CustomVoice
+==================================================
+Gleiche Passage wie demo_kapitel3.py, aber mit Qwen3-TTS statt XTTS v2.
 
 Stimmen:
-  Erzaehler -> Damien Black
-  Qwert     -> Andrew Chipper
-  Jadusa    -> Gitta Nikolina
+  erzaehler -> uncle_fu
+  qwert     -> eric
+  jadusa    -> sohee
+
+Nutzung: .qwen_venv\Scripts\python.exe demos\demo_kapitel3_qwen3.py [--force]
 """
 
-import os, re, time
+import os, re, time, torch
 from pathlib import Path
 
 PROJECT_DIR  = Path(__file__).parent.parent.resolve()
-MODELS_DIR   = PROJECT_DIR / "models"
 OUTPUT_DIR   = PROJECT_DIR / "demo_output"
-SEGMENTS_DIR = OUTPUT_DIR / "segmente_preset"
+SEGMENTS_DIR = OUTPUT_DIR / "segmente_qwen3"
 
-os.environ["TORCH_HOME"]          = str(MODELS_DIR / "torch")
-os.environ["TRANSFORMERS_CACHE"]  = str(MODELS_DIR / "huggingface" / "transformers")
-os.environ["TTS_HOME"]            = str(MODELS_DIR / "coqui")
-os.environ["COQUI_TOS_AGREED"]    = "1"
+env_file = PROJECT_DIR / ".env"
+if env_file.exists():
+    for line in env_file.read_text().splitlines():
+        if line.startswith("HF_TOKEN="):
+            os.environ["HF_TOKEN"] = line.split("=", 1)[1].strip()
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 SEGMENTS_DIR.mkdir(parents=True, exist_ok=True)
 
 FORCE = "--force" in sys.argv
 
-SAMPLE_RATE = 24000
-
-PRESET_STIMMEN = {
-    "erzaehler": "Damien Black",
-    "qwert":     "Andrew Chipper",
-    "jadusa":    "Gitta Nikolina",
+STIMMEN = {
+    "erzaehler": "uncle_fu",
+    "qwert":     "eric",
+    "jadusa":    "sohee",
 }
 
 MAX_CHUNK_CHARS = 80
@@ -133,40 +132,23 @@ PASSAGE = [
 
 import numpy as np
 import soundfile as sf
-import torch
+from qwen_tts import Qwen3TTSModel
 
-print(f"[torch] CUDA: {torch.cuda.is_available()}")
-
-import torchaudio as _ta
-def _ta_load(filepath, frame_offset=0, num_frames=-1, **_kw):
-    data, sr = sf.read(str(filepath), always_2d=True, dtype="float32")
-    t = torch.from_numpy(data.T.copy())
-    if frame_offset > 0: t = t[:, frame_offset:]
-    if num_frames and num_frames > 0: t = t[:, :num_frames]
-    return t, sr
-def _ta_save(filepath, src, sample_rate, **_kw):
-    arr = src.squeeze().cpu().numpy()
-    sf.write(str(filepath), arr if arr.ndim == 1 else arr.T, sample_rate)
-_ta.load = _ta_load
-_ta.save = _ta_save
-
-import transformers.pytorch_utils as _pt_utils
-if not hasattr(_pt_utils, "isin_mps_friendly"):
-    _pt_utils.isin_mps_friendly = torch.isin
-
-print(f"\n[xtts] lade Modell ...")
+print(f"\n[qwen3] lade Modell ...")
 t0 = time.time()
-from TTS.api import TTS
-device = "cuda" if torch.cuda.is_available() else "cpu"
-tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
-SR_OUT = tts.synthesizer.output_sample_rate
-print(f"[xtts] geladen in {time.time()-t0:.1f}s | SR={SR_OUT}")
+model = Qwen3TTSModel.from_pretrained(
+    "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
+    device_map="cuda",
+    dtype=torch.bfloat16,
+)
+SR_OUT = 24000
+print(f"[qwen3] geladen in {time.time()-t0:.1f}s")
 
-for rolle, speaker in PRESET_STIMMEN.items():
+for rolle, speaker in STIMMEN.items():
     print(f"[stimme] {rolle:12} -> {speaker}")
 
-def trim_stille(wav, schwelle=0.01, rand_ms=40):
-    rand = int(SR_OUT * rand_ms / 1000)
+def trim_stille(wav, schwelle=0.005, rand_ms=40, sr=SR_OUT):
+    rand = int(sr * rand_ms / 1000)
     maske = np.abs(wav) > schwelle
     idx = np.where(maske)[0]
     if len(idx) == 0:
@@ -199,9 +181,13 @@ for i, (rolle, text) in enumerate(PASSAGE, 1):
         else:
             try:
                 t0 = time.time()
-                speaker = PRESET_STIMMEN[rolle]
-                wav_list = tts.tts(text=chunk, speaker=speaker, language="de")
-                wav_np = np.array(wav_list, dtype=np.float32)
+                speaker = STIMMEN[rolle]
+                wavs, sr = model.generate_custom_voice(
+                    text=chunk,
+                    speaker=speaker,
+                    language="German",
+                )
+                wav_np = wavs[0].astype(np.float32)
                 sf.write(str(seg_path), wav_np, SR_OUT)
                 gt = time.time() - t0
                 if n > 1:
@@ -211,7 +197,7 @@ for i, (rolle, text) in enumerate(PASSAGE, 1):
                 ok += 1
             except Exception as e:
                 print(f"    FEHLER: {e}")
-                wav_np = SILENCE_GLEICH
+                wav_np = SILENCE_GLEICH.copy()
                 fail += 1
         seg_wavs.append(wav_np)
 
@@ -227,7 +213,7 @@ full_audio = np.concatenate(audio_parts)
 total_sec  = len(full_audio) / SR_OUT
 gen_total  = time.time() - t_start
 
-out_path = OUTPUT_DIR / "kapitel3_preset.wav"
+out_path = OUTPUT_DIR / "kapitel3_qwen3.wav"
 sf.write(str(out_path), full_audio, SR_OUT)
 
 print(f"\n[ok] {ok} Segmente OK, {fail} Fehler")

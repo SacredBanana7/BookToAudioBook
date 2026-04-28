@@ -22,8 +22,6 @@ MODELS_DIR   = PROJECT_DIR / "models"
 PROFILES_DIR = PROJECT_DIR / "stimmen_profile"
 OUTPUT_DIR   = PROJECT_DIR / "test_output"
 
-os.environ["HF_HOME"]            = str(MODELS_DIR / "huggingface")
-os.environ["HF_HUB_CACHE"]       = str(MODELS_DIR / "huggingface" / "hub")
 os.environ["TORCH_HOME"]          = str(MODELS_DIR / "torch")
 os.environ["TRANSFORMERS_CACHE"]  = str(MODELS_DIR / "huggingface" / "transformers")
 os.environ["TTS_HOME"]            = str(MODELS_DIR / "coqui")

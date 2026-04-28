@@ -10,7 +10,9 @@ build/
 # Virtuelle Umgebungen
 venv/
 .venv/
+.qwen_venv/
 .env/
+.env
 
 # TTS-Modelle / Caches (mehrere GB)
 models/
