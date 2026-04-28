@@ -20,9 +20,6 @@ PROJECT_DIR  = Path(__file__).parent.parent.resolve()
 MODELS_DIR   = PROJECT_DIR / "models" / "kokoro"
 OUTPUT_DIR   = PROJECT_DIR / "preset_stimmen_kokoro"
 
-os.environ["HF_HOME"]      = str(PROJECT_DIR / "models" / "huggingface")
-os.environ["HF_HUB_CACHE"] = str(PROJECT_DIR / "models" / "huggingface" / "hub")
-
 MODELS_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 

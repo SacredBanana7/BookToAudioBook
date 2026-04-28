@@ -21,8 +21,6 @@ import torch
 PROJECT_DIR = Path(__file__).parent.parent.resolve()
 MODELS_DIR  = PROJECT_DIR / "models"
 
-os.environ["HF_HOME"]            = str(MODELS_DIR / "huggingface")
-os.environ["HF_HUB_CACHE"]       = str(MODELS_DIR / "huggingface" / "hub")
 os.environ["TORCH_HOME"]          = str(MODELS_DIR / "torch")
 os.environ["TRANSFORMERS_CACHE"]  = str(MODELS_DIR / "huggingface" / "transformers")
 

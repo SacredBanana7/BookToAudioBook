@@ -22,8 +22,6 @@ PROJECT_DIR = Path(__file__).parent.parent.resolve()
 MODELS_DIR  = PROJECT_DIR / "models"
 OUTPUT_DIR  = PROJECT_DIR / "preset_stimmen"
 
-os.environ["HF_HOME"]            = str(MODELS_DIR / "huggingface")
-os.environ["HF_HUB_CACHE"]       = str(MODELS_DIR / "huggingface" / "hub")
 os.environ["TORCH_HOME"]          = str(MODELS_DIR / "torch")
 os.environ["TRANSFORMERS_CACHE"]  = str(MODELS_DIR / "huggingface" / "transformers")
 os.environ["TTS_HOME"]            = str(MODELS_DIR / "coqui")

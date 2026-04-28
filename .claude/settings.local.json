@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip --version)",
+      "Bash(python -c \"import sys; print\\(sys.executable\\)\")",
+      "Bash(nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv)",
+      "Bash(pip show *)",
+      "Bash(.venv/Scripts/python.exe generate_preset_vorschau.py)",
+      "Bash(.venv/Scripts/python.exe check_qualitaet.py)",
+      "Bash(.venv/Scripts/python.exe stimme_einpflegen.py stephan)",
+      "Bash(.venv/Scripts/python.exe stimme_einpflegen.py bea)",
+      "Bash(.venv/Scripts/python.exe demo_kapitel3.py)",
+      "Bash(.venv/Scripts/python.exe stimme_einpflegen.py benni)",
+      "Bash(.venv/Scripts/python.exe stimme_einpflegen.py sina)",
+      "Bash(.venv/Scripts/python.exe demo_kapitel3.py --force)",
+      "Bash(.venv/Scripts/python.exe stimme_einpflegen.py combi)",
+      "Bash(.venv/Scripts/python.exe stimme_einpflegen.py micha \"Audio Samples whatzapp/Micha neu.ogg\")",
+      "Bash(.venv/Scripts/python.exe -c ' *)",
+      "PowerShell(cd \"c:\\\\Users\\\\PC\\\\Documents\\\\Claude\\\\Projects\\\\Hörbuch\"; .venv\\\\Scripts\\\\python.exe archiv\\\\test_kokoro.py 2> \"$env:USERPROFILE\\\\kokoro_err.txt\"; Get-Content \"$env:USERPROFILE\\\\kokoro_err.txt\" | Select-Object -Last 30)",
+      "Bash(git add *)",
+      "Bash(git pull *)",
+      "PowerShell(& \"C:\\\\Users\\\\PC\\\\Documents\\\\Claude\\\\Projects\\\\H�rbuch\\\\.venv\\\\Scripts\\\\python.exe\" --version)",
+      "Bash(\".qwen_venv/Scripts/python.exe\" archiv/test_qwen3tts.py)"
+    ]
+  }
+}
